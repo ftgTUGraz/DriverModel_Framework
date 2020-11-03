@@ -1,0 +1,8 @@
+.vs/*
+Lib/*
+Temp/*
+**/x64/*
+.editorconfig
+**/.vs/*
+src/DriverModel.vcxproj.filters
+src/DriverModel.vcxproj.user
