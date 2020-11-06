@@ -14,6 +14,7 @@ PTV Vissim DriverModel Framework is a framework for writing driver model dll use
 
 User has to implement InjectorAbstract class. The child class is already provided in Implementation filter of VS where *capture* and *action* methods have to be implemented. In *capture* user can select target vehicles and in *action* action which is to be performed on those vehicles is defined.
 
+### Example
 In the following example, all vehicles surrounding one Ego vehicle which have a velocity greater than 5 m/s are selected as a target. At the end of the capture method, the action is triggered.
 
 ```
@@ -48,3 +49,43 @@ void Injector::action(NearbyVehicle* veh, const std::vector<NearbyVehicle*> acti
 Besides *getNearbyVehicles*, user can also query vehicles currently in front or at the back of selected Ego vehicle, by calling *getVehiclesDownstream* and *getVehiclesUpstream*. All attributes of target vehicle which can be manipulated can be seen in *NearbyVehicle* class.
 
 After compiling x64 dll, the path to the external driver model has to be provided in Vissim for the desired vehicle type. In the case of co-simulation, it is enough to provide the path as described and to start the co-simulation.
+
+### Example
+Here is another example of *capture* and *action* implementation:
+
+Here the traffic is not observed for the first 15 seconds of the simulation. After that, all vehicles currently located in front of our ego vehicle are selected as targets.
+```
+void Injector::capture()
+{
+	if (this->getCurrentSimTime() > 15)
+	{
+		auto n_vehicles = this->getVehiclesDownstream();
+
+		for (auto& veh : n_vehicles)
+		{
+				veh->setAsTarget();
+		}
+		startAction(8, 8);
+	}
+}
+...
+```
+
+```
+void Injector::action(NearbyVehicle* veh, const std::vector<NearbyVehicle*> actionNveh)
+{
+	veh->color = YELLOW;
+	veh->acceleration = -1;
+}
+```
+
+This example in action can be seen in the following video:
+
+[![DriverModel Framework presentation](https://img.youtube.com/vi/zmbCSA0oH9o/0.jpg)](https://www.youtube.com/watch?v=zmbCSA0oH9o)
+
+
+## Practical Application
+
+For those interested in one of the practical implementations of the DriverModel Framework, following presentation at IPG Automotive TECH WEEKS is recommended:
+
+[![Deterministic Stress Testing Method](https://img.youtube.com/vi/47oo-10XZRA/0.jpg)](https://www.youtube.com/watch?v=47oo-10XZRA)
