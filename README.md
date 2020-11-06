@@ -83,6 +83,8 @@ This example in action can be seen in the following video:
 
 [![DriverModel Framework presentation](https://img.youtube.com/vi/zmbCSA0oH9o/0.jpg)](https://www.youtube.com/watch?v=zmbCSA0oH9o)
 
+In the video, the white vehicle is selected ego vehicle which ID can be specified in the Parameters file. After 15 seconds, the first action is triggered and all vehicles coloured in yellow are detected target vehicles in front of the ego. Action has a duration of 8 seconds during which target vehicles deaccelerate at the constant rate. After action expires, no new action is triggered for at least following 8 seconds from the previous action end due to startAction(8, 8).
+
 
 ## Practical Application
 
